@@ -1,0 +1,25 @@
+services:
+  db:
+    container_name: ${POSTGRES_DB}-db
+    image: postgres:17.0-bullseye
+    environment:
+      - POSTGRES_USER=${POSTGRES_DB_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_DB_PASSWORD}
+      - POSTGRES_DB=${POSTGRES_DB}
+    volumes:
+      - ./.volumes/db_data:/var/lib/postgresql/data
+    restart: always
+
+  django:
+    container_name: jtasg-django
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - ${DJANGO_PORT}:${DJANGO_PORT}
+    env_file: .env
+    depends_on:
+      - db
+    restart: always
