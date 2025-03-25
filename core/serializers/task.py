@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from core.serializers.user import UserSerializer
-from core.models.tasks import Task
+from core.models import Task
 
 class TaskSerializer(serializers.ModelSerializer):
     assigned_users = UserSerializer(many=True, read_only=True)
