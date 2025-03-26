@@ -1,9 +1,10 @@
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Count, Q
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
 
-from .user import User
+from ..user import User
 
 
 class TaskStatus(models.TextChoices):
@@ -17,6 +18,7 @@ class Task(models.Model):
     description = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     completed_at = models.DateTimeField(null=True, blank=True)
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
     assigned_users = models.ManyToManyField(User, through='TaskAssignment', related_name='tasks')
 
     class TaskTypes(models.TextChoices):

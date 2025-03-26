@@ -1,2 +1,3 @@
-from .task import Task, TaskAssignment
-from .user import User
+from .task import *
+from .team import *
+from .user import *

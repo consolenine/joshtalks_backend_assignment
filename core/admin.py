@@ -1,5 +1,5 @@
 from django.contrib import admin
-from core.models import User, Task, TaskAssignment
+from core.models import User, Task, TaskAssignment, Team, TeamRoles
 
 class TaskAssignmentInline(admin.TabularInline):
     model = TaskAssignment
@@ -11,10 +11,20 @@ class TaskAdmin(admin.ModelAdmin):
     search_fields = ('name', 'description')
     inlines = [TaskAssignmentInline]
 
+class UserTeamInline(admin.TabularInline):
+    model = TeamRoles
+    extra = 1
+
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'mobile', 'role')
-    list_filter = ('role',)
+    list_display = ('username', 'email', 'mobile')
     search_fields = ('username', 'email', 'mobile')
+    inlines = [UserTeamInline]
+
+class TeamAdmin(admin.ModelAdmin):
+    list_display = ('name', 'owner')
+    search_fields = ('name', 'owner__username')
+    inlines = [UserTeamInline]
 
 admin.site.register(User, UserAdmin)
 admin.site.register(Task, TaskAdmin)
+admin.site.register(Team, TeamAdmin)
